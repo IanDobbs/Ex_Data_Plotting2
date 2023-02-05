@@ -1,4 +1,4 @@
-## plot1.R
+## plot2.R
 
 ## locate and download the dataset
 fileurl <-  "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
@@ -21,23 +21,24 @@ str(NEI)
 
 library(dplyr)
 
-##Question 1
-##Have total emissions from PM2.5 decreased in the United States from
-##1999 to 2008? Using the base plotting system, make a plot showing the total
-##PM2.5 emission from all sources for each of the years 1999, 2002, 2005, and 2008.
+##Question 2
+##Have total emissions from PM2.5 decreased in the Baltimore City, Maryland
+##(fips == "24510") from 1999 to 2008? Use the base plotting system to make
+##a plot answering this question.
 
-total_emi <- group_by(NEI, year)
-sum_emi <- summarise(total_emi, Emissions = sum(Emissions, na.rm = TRUE)/1000)
+baltimore <- filter(NEI, fips == "24510")
+total_emi <- group_by(baltimore, year)
+sum_emi <- summarise(total_emi, Emissions = sum(Emissions, na.rm = TRUE))
 
 # A tibble: 4 × 2
 #year Emmissions
 #   <int>      <dbl>
-# 1  1999   7332.967
-# 2  2002   5635.780
-# 3  2005   5454.703
-# 4  2008   3464.206
+#1  1999     3274.
+#2  2002     2454.
+#3  2005     3091.
+#4  2008     1862.
 
-png("plot1.png", width = 480, height = 480, units = "px")
+png("plot2.png", width = 480, height = 480, units = "px")
 with(sum_emi, plot(year, Emissions, type = "b",
-                   ylab = "Total PM2.5 Emissions from all sources (000 tons)"))
+                   ylab = "Total PM2.5 Emissions from all sources"))
 dev.off()
